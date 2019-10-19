@@ -16,7 +16,7 @@ def require_library_or_gem(library_name)
       raise cannot_require
     end
     # 2. Rubygems is installed and loaded. Try to load the library again
-    begin 
+    begin
       require library_name
     rescue LoadError => gem_not_installed
       raise cannot_require
@@ -75,21 +75,24 @@ module ActiveRecord
     #   end
     #
     #   Courses.establish_connection( ... )
-    def self.establish_connection(spec)
-      if spec.instance_of? ConnectionSpecification
-        @@defined_connections[self] = spec
-      elsif spec.is_a?(Symbol)
-        establish_connection(configurations[spec.to_s])
-      else
-        if spec.nil? then raise AdapterNotSpecified end
-        symbolize_strings_in_hash(spec)
-        unless spec.key?(:adapter) then raise AdapterNotSpecified end
+    def self.establish_connection(spec = nil)
+      case spec
+        when nil
+          raise AdapterNotSpecified unless defined? RAILS_ENV
+          establish_connection(RAILS_ENV)
+        when ConnectionSpecification
+          @@defined_connections[self] = spec
+        when Symbol, String
+          establish_connection(configurations[spec.to_s])
+        else
+          symbolize_strings_in_hash(spec)
+          unless spec.key?(:adapter) then raise AdapterNotSpecified end
 
-        adapter_method = "#{spec[:adapter]}_connection"
-        unless methods.include?(adapter_method) then raise AdapterNotFound end
-        remove_connection
-        @@defined_connections[self] = ConnectionSpecification.new(spec, adapter_method)
-      end
+          adapter_method = "#{spec[:adapter]}_connection"
+          unless methods.include?(adapter_method) then raise AdapterNotFound end
+          remove_connection
+          establish_connection(ConnectionSpecification.new(spec, adapter_method))
+        end
     end
 
     # Locate the connection of the nearest super class. This can be an
@@ -116,7 +119,7 @@ module ActiveRecord
       klass = self
       until klass == ActiveRecord::Base.superclass
         if Thread.current['active_connections'].is_a?(Hash) && Thread.current['active_connections'][klass]
-          return true 
+          return true
         else
           klass = klass.superclass
         end
@@ -294,7 +297,7 @@ module ActiveRecord
       # Begins the transaction (and turns off auto-committing).
       def begin_db_transaction()    end
 
-      # Commits the transaction (and turns on auto-committing). 
+      # Commits the transaction (and turns on auto-committing).
       def commit_db_transaction()   end
 
       # Rollsback the transaction (and turns on auto-committing). Must be done if the transaction block
@@ -307,7 +310,7 @@ module ActiveRecord
           when NilClass                    then "NULL"
           when TrueClass                   then (column && column.type == :boolean ? "'t'" : "1")
           when FalseClass                  then (column && column.type == :boolean ? "'f'" : "0")
-          when Float, Fixnum, Bignum, Date then "'#{value.to_s}'" 
+          when Float, Fixnum, Bignum, Date then "'#{value.to_s}'"
           when Time, DateTime              then "'#{value.strftime("%Y-%m-%d %H:%M:%S")}'"
           else                                  "'#{quote_string(value.to_yaml)}'"
         end
@@ -347,7 +350,7 @@ module ActiveRecord
 
           @logger.info(
             format_log_entry(
-              "#{name.nil? ? "SQL" : name} (#{sprintf("%f", runtime)})", 
+              "#{name.nil? ? "SQL" : name} (#{sprintf("%f", runtime)})",
               sql.gsub(/ +/, " ")
             )
           )
