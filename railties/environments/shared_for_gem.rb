@@ -32,8 +32,9 @@ require_gem 'action_mailer'
 
 
 # Environment-specific configuration.
-require 'yaml'
 ActiveRecord::Base.configurations = YAML::load(File.open("#{RAILS_ROOT}/config/database.yml"))
+ActiveRecord::Base.establish_connection
+
 ActionController::Base.require_or_load 'abstract_application'
 ActionController::Base.require_or_load "environments/#{RAILS_ENV}"
 
