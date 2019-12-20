@@ -162,7 +162,7 @@ GEM
     queue_classic (3.1.0)
       pg (>= 0.17, < 0.19)
     racc (1.4.14)
-    rack (1.6.8)
+    rack (1.6.12)
     rack-cache (1.7.0)
       rack (>= 0.4)
     rack-protection (1.5.3)
