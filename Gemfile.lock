@@ -177,7 +177,7 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rake (12.0.0)
+    rake (13.0.1)
     rdoc (4.3.0)
     redcarpet (3.1.2)
     redis (3.3.3)
