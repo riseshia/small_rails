@@ -108,7 +108,7 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
-    crass (1.0.3)
+    crass (1.0.6)
     dalli (2.7.6)
     dante (0.2.0)
     delayed_job (4.1.3)
@@ -133,7 +133,7 @@ GEM
     kindlerb (0.1.1)
       mustache
       nokogiri
-    loofah (2.2.1)
+    loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -175,8 +175,8 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
+    rails-html-sanitizer (1.4.3)
+      loofah (~> 2.3)
     rake (12.0.0)
     rdoc (4.3.0)
     redcarpet (3.1.2)
